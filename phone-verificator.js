@@ -8,8 +8,8 @@ function restrictInput(event) {
 }
 
 function validatePhoneNumber() {
-  const phoneNumber = document.getElementById('phoneNumber').value;
   let pattern = /^\+?\d+$/
+  const phoneNumber = document.getElementById('phoneNumber').value;
   const isValidPhoneNumber = pattern.test(phoneNumber) 
 
   if (isValidPhoneNumber) {
