@@ -9,8 +9,8 @@ function restrictInput(event) {
 
 function validatePhoneNumber() {
   const phoneNumber = document.getElementById('phoneNumber').value;
-
-  const isValidPhoneNumber = /^\+?\d/.test(phoneNumber) 
+  let pattern = /^\+?\d+$/
+  const isValidPhoneNumber = pattern.test(phoneNumber) 
 
   if (isValidPhoneNumber) {
       alert('Phone number is valid!');
