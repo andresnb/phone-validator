@@ -1,0 +1,149 @@
+{
+  "Perú": {
+    "country_code": "51",
+    "mobile_codes": ["9"],
+    "phone_length": 9,
+    "prefix": "",
+    "code": "PE"
+  },
+  "México": {
+    "country_code": "52",
+    "mobile_codes": ["55", "56", "81", "33", "656", "614", "618", "999", "990", "221", "222", "442", "446", "449", "663", "664", "612", "624", "844", "686", "667", "722", "729", "998", "871", "744", "444", "440", "833", "477", "479", "961", "662", "633", "645", "644", "642", "631", "229", "443", "921", "771", "981", "899", "868"],
+    "phone_length": 10,
+    "prefix": "",
+    "code": "MX"
+  },
+  "Argentina": {
+    "country_code": "54",
+    "mobile_codes": ["1", "383", "3", "2", "37", "35417", "34", "388", "38", "26", "29", "264"],
+    "phone_length": 10,
+    "prefix": ["9", "15"],
+    "code": "AR"
+  },
+  "Bolivia": {
+    "country_code": "591",
+    "mobile_codes": ["6", "7"],
+    "phone_length": 8,
+    "prefix": "",
+    "code": "BO"
+  },
+  "Brasil": {
+    "country_code": "55",
+    "mobile_codes": [],
+    "phone_length": 11,
+    "prefix": "",
+    "code": "BR"
+  },
+  "Chile": {
+    "country_code": "56",
+    "mobile_codes": [],
+    "phone_length": 9,
+    "prefix": "",
+    "code": "CL"
+  },
+  "Colombia": {
+    "country_code": "57",
+    "mobile_codes": [],
+    "phone_length": 10,
+    "prefix": "",
+    "code": "CO"
+  },
+  "Costa Rica": {
+    "country_code": "506",
+    "mobile_codes": [],
+    "phone_length": 8,
+    "prefix": "",
+    "code": "CR"
+  },
+  "Cuba": {
+    "country_code": "53",
+    "mobile_codes": [],
+    "phone_length": 8,
+    "prefix": "",
+    "code": "CU"
+  },
+  "Ecuador": {
+    "country_code": "593",
+    "mobile_codes": [],
+    "phone_length": 10,
+    "prefix": "",
+    "code": "EC"
+  },
+  "El Salvador": {
+    "country_code": "503",
+    "mobile_codes": [],
+    "phone_length": 8,
+    "prefix": "",
+    "code": "SV"
+  },
+  "España": {
+    "country_code": "34",
+    "mobile_codes": [],
+    "phone_length": 9,
+    "prefix": "",
+    "code": "ES"
+  },
+  "Guatemala": {
+    "country_code": "502",
+    "mobile_codes": [],
+    "phone_length": 8,
+    "prefix": "",
+    "code": "GT"
+  },
+  "Honduras": {
+    "country_code": "504",
+    "mobile_codes": [],
+    "phone_length": 8,
+    "prefix": "",
+    "code": "HN"
+  },
+  "Nicaragua": {
+    "country_code": "505",
+    "mobile_codes": [],
+    "phone_length": 8,
+    "prefix": "",
+    "code": "NI"
+  },
+  "Panamá": {
+    "country_code": "507",
+    "mobile_codes": [],
+    "phone_length": 8,
+    "prefix": "",
+    "code": "PA"
+  },
+  "Paraguay": {
+    "country_code": "595",
+    "mobile_codes": [],
+    "phone_length": 9,
+    "prefix": "",
+    "code": "PY"
+  },
+  "Puerto Rico": {
+    "country_code": "1",
+    "mobile_codes": ["787", "939"],
+    "phone_length": 10,
+    "prefix": "",
+    "code": "PR"
+  },
+  "República Dominicana": {
+    "country_code": "1",
+    "mobile_codes": ["809", "829", "849"],
+    "phone_length": 10,
+    "prefix": "",
+    "code": "DO"
+  },
+  "Uruguay": {
+    "country_code": "598",
+    "mobile_codes": [],
+    "phone_length": 8,
+    "prefix": "",
+    "code": "UY"
+  },
+  "Venezuela": {
+    "country_code": "58",
+    "mobile_codes": [],
+    "phone_length": 10,
+    "prefix": "",
+    "code": "VE"
+  }
+}

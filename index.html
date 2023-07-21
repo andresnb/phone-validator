@@ -1,40 +1,29 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Phone Verificator</title>
-  
+  <title>Phone Number Validation</title>
 </head>
 <body>
-  <form id="form">
-    <input type="text" id="phoneNumber" placeholder="Enter phone number">
-    <select id="country">
-      <option value=false>País</option>
-      <option value="PE">Perú</option>
-      <option value="MX">México</option>
-      <option value="AR">Argentina</option>
-      <option value="BO">Bolivia</option>
-      <option value="BR">Brasil</option>
-      <option value="CL">Chile</option>
-      <option value="CO">Colombia</option>
-      <option value="CR">Costa Rica</option>
-      <option value="CU">Cuba</option>
-      <option value="EC">Ecuador</option>
-      <option value="SV">El Salvador</option>
-      <option value="ES">España</option>
-      <option value="GT">Guatemala</option>
-      <option value="HN">Honduras</option>
-      <option value="NI">Nicaragua</option>
-      <option value="PA">Panamá</option>
-      <option value="PY">Paraguay</option>
-      <option value="PR">Puerto Rico</option>
-      <option value="DO">República Dominicana</option>
-      <option value="UY">Uruguay</option>
-      <option value="VE">Venezuela</option>
-  </select>
-    <input type="submit" value="Submit">
+  <h1>Phone Number Validation</h1>
+  <form id="phoneForm">
+    <label for="nationality">Nationality:</label>
+    <select id="nationality">
+      <option value="">Select Nationality</option>
+      <!-- Options will be added dynamically by JavaScript -->
+    </select>
+    <br>
+    <label for="countryCode">Phone Prefix (Country Code):</label>
+    <select id="countryCode" disabled>
+      <option value="">Loading...</option>
+    </select>
+    <br>
+    <label for="phone">Phone Number:</label>
+    <input type="text" id="phone">
+    <button type="button" onclick="validatePhoneNumber()">Validate</button>
   </form>
+  <p id="validationResult"></p>
+
+  <script src="utils/phone_formats.json"></script>
+  <script src="js/phone-verification.js"></script>
 </body>
-<script src="phone-verificator.js"></script>
 </html>
