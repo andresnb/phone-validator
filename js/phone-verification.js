@@ -1,76 +1,91 @@
-function populateNationalitySelector() {
-  const nationalitySelect = document.getElementById("nationality");
+document.addEventListener('DOMContentLoaded', function () {
+  const nationalitySelector = document.getElementById('nationality');
+  const countryCodeSelector = document.getElementById('countryCode');
+  const phoneInput = document.getElementById('phone');
+  const validationResult = document.getElementById('validationResult');
 
   for (const country in phoneFormats) {
-    const option = document.createElement("option");
-    option.value = country;
-    option.textContent = country;
-    nationalitySelect.appendChild(option);
-  }
-}
-
-function getUserIPInfo() {
-  fetch("https://ipinfo.io/json?token=f639fc606f20db") // Replace YOUR_IPINFO_TOKEN with your ipinfo.io token
-    .then((response) => response.json())
-    .then((data) => {
-      const nationalitySelect = document.getElementById("nationality");
-      const countryCodeSelect = document.getElementById("countryCode");
-
-      const userCountry = data.country;
-      const userCountryOption = nationalitySelect.querySelector(`option[value="${userCountry}"]`);
-
-      if (userCountryOption) {
-        nationalitySelect.value = userCountry;
-        countryCodeSelect.value = phoneFormats[userCountry].country_code;
-      } else {
-        nationalitySelect.value = "";
-        countryCodeSelect.value = "";
-        countryCodeSelect.disabled = true;
-        nationalitySelect.insertAdjacentHTML('afterend', '<p>Your current country is not in the list.</p>');
-      }
-    })
-    .catch((error) => console.error("Error loading user IP information:", error));
-}
-
-function validatePhoneNumber() {
-  const nationalitySelect = document.getElementById("nationality");
-  const selectedCountry = nationalitySelect.value;
-  const phoneNumberInput = document.getElementById("phone");
-  const phoneNumber = phoneNumberInput.value.trim();
-
-  if (selectedCountry === "") {
-    displayValidationResult("Please select a nationality.");
-    return;
+    create_options(nationalitySelector, country, phoneFormats[country].country_name);
+    create_options(countryCodeSelector, country, phoneFormats[country].country_code);
   }
 
-  if (phoneNumber === "") {
-    displayValidationResult("Please enter a phone number.");
-    return;
+  nationalitySelector.addEventListener('change', function () {
+      countryCodeSelector.value = nationalitySelector.value;
+  });
+
+  function create_options(selector, value, text){
+    const option = document.createElement('option');
+    option.value = value;
+    option.textContent = text;
+    selector.appendChild(option);
   }
 
-  const countryInfo = phoneFormats[selectedCountry];
-  if (!countryInfo) {
-    displayValidationResult("Invalid nationality selected.");
-    return;
+  function validatePhoneNumber() {
+    const selectedCountry = nationalitySelector.value;
+    const countryCode = countryCodeSelector.value;
+    const phone = phoneInput.value.trim();
+
+    if (!selectedCountry) {
+      validationResult.textContent = "Please select a nationality.";
+      return;
+    }
+
+    if (!countryCode) {
+      validationResult.textContent = "Please select a phone prefix.";
+      return;
+    }
+
+    if (!phone) {
+      validationResult.textContent = "Please enter a phone number.";
+      return;
+    }
+
+    const countryData = phoneFormats[selectedCountry];
+    if (countryData) {
+      const phoneCheck = checkNumber(countryData, phone);
+      console.log(phoneCheck)
+      validationResult.textContent = phoneCheck.valid ? "Valid phone number" : phoneCheck.message;
+    } else {
+      validationResult.textContent = "Invalid conutry code.";
+    }
   }
 
-  const regexPattern = new RegExp(`^\\+?${countryInfo.country_code}(${countryInfo.mobile_codes.join("|")})\\d{${countryInfo.phone_length - countryInfo.country_code.length - 1}}$`);
-  if (regexPattern.test(phoneNumber)) {
-    displayValidationResult("Phone number is valid.");
-  } else {
-    displayValidationResult("Invalid phone number.");
+  function checkNumber(countryData, phoneNumber) {
+    const { country_code, phone_length, country_name } = countryData;
+
+    const countryCode = country_code.replace('+', '');
+    const formattedPhoneNumber = countryCode + phoneNumber.replace(/\D/g, ''); // Remove all non-digit characters
+
+    if (!formattedPhoneNumber.startsWith(countryCode)) {
+      error_msg = "Phone number must start with the country code"
+      return {message:error_msg, valid: false}; // Phone number must start with the country code
+    }
+
+    if (phoneNumber.length === phone_length){
+      return {valid: true}
+    }else{
+      error_msg = "In "+country_name+" phones should have "+phone_length+" digits instead of "+phoneNumber.length+"."
+      return {message:error_msg, valid: false}
+    }
   }
-}
+  
+  function fetchUserCountryCode() {
+    fetch('https://ipinfo.io?token=f639fc606f20db')
+      .then((response) => response.json())
+      .then((data) => {
+        const countryCode = data.country;
+        const selectedCountry = Object.keys(phoneFormats).find((country) => country === countryCode);
+        if (selectedCountry) {
+          nationalitySelector.value = selectedCountry;
+          countryCodeSelector.value = selectedCountry;
+        }
+      })
+      .catch((error) => {
+        console.error('Error fetching user IP details:', error);
+      });
+  }
 
-function displayValidationResult(message) {
-  document.getElementById("validationResult").textContent = message;
-}
+  fetchUserCountryCode();
 
-// Wait for the DOM to load before populating the nationality selector and fetching user IP information
-document.addEventListener("DOMContentLoaded", () => {
-  populateNationalitySelector();
-  getUserIPInfo();
-
-  const validateButton = document.getElementById("validateBtn");
-  validateButton.addEventListener("click", validatePhoneNumber);
+  document.getElementById('validateButton').addEventListener('click', validatePhoneNumber);
 });

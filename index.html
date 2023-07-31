@@ -13,17 +13,18 @@
     </select>
     <br>
     <label for="countryCode">Phone Prefix (Country Code):</label>
-    <select id="countryCode" disabled>
+    <select id="countryCode">
       <option value="">Loading...</option>
     </select>
     <br>
     <label for="phone">Phone Number:</label>
     <input type="text" id="phone">
-    <button type="button" onclick="validatePhoneNumber()">Validate</button>
+    <button type="button" id="validateButton">Validate</button>
   </form>
   <p id="validationResult"></p>
 
-  <script src="utils/phone_formats.json"></script>
+  <!-- Load the phone-formats.js using a script tag -->
+  <script src="js/phone-formats.js"></script>
   <script src="js/phone-verification.js"></script>
 </body>
 </html>
