@@ -54,19 +54,34 @@ document.addEventListener('DOMContentLoaded', function () {
     const { country_code, phone_length, country_name } = countryData;
 
     const countryCode = country_code.replace('+', '');
-    const formattedPhoneNumber = countryCode + phoneNumber.replace(/\D/g, ''); // Remove all non-digit characters
+    const phoneNoPrefix = removePrefixFromPhoneNumber(phoneNumber, countryData);
+    const formattedPhoneNumber = countryCode + phoneNoPrefix.replace(/\D/g, ''); // Remove all non-digit characters
 
     if (!formattedPhoneNumber.startsWith(countryCode)) {
       error_msg = "Phone number must start with the country code"
       return {message:error_msg, valid: false}; // Phone number must start with the country code
     }
 
-    if (phoneNumber.length === phone_length){
+    if (phoneNoPrefix.length === phone_length){
       return {valid: true}
     }else{
       error_msg = "In "+country_name+" phones should have "+phone_length+" digits instead of "+phoneNumber.length+"."
       return {message:error_msg, valid: false}
     }
+  }
+
+  function removePrefixFromPhoneNumber(phoneNumber, countryData) {
+    const formattedPhoneNumber = phoneNumber.replace(/\D/g, ''); // Remove all non-digit characters
+    const trunkPrefix = countryData.trunk_prefix;
+    console.log(formattedPhoneNumber, trunkPrefix)
+    if (trunkPrefix && formattedPhoneNumber.startsWith(trunkPrefix)) {
+      // Remove the prefix from the phone number
+      const withoutPrefix = formattedPhoneNumber.substring(trunkPrefix.length);
+      return withoutPrefix;
+    }
+  
+    // If no prefix or prefix doesn't match, return the original phone number
+    return formattedPhoneNumber;
   }
   
   function fetchUserCountryCode() {
@@ -85,7 +100,17 @@ document.addEventListener('DOMContentLoaded', function () {
       });
   }
 
+  function restrictInput(event) {
+    const allowedCharacters = /[0-9+]/;
+    const inputChar = String.fromCharCode(event.charCode);
+
+    if (!allowedCharacters.test(inputChar)) {
+        event.preventDefault();
+    }
+}
+
   fetchUserCountryCode();
 
   document.getElementById('validateButton').addEventListener('click', validatePhoneNumber);
+  document.getElementById('phone').addEventListener('keypress', restrictInput);
 });
