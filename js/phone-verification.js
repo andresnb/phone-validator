@@ -6,18 +6,23 @@ document.addEventListener('DOMContentLoaded', function () {
 
   for (const country in phoneFormats) {
     create_options(nationalitySelector, country, phoneFormats[country].country_name);
-    create_options(countryCodeSelector, country, phoneFormats[country].country_code);
+    create_options(countryCodeSelector, country, phoneFormats[country].country_code, true);
   }
 
   nationalitySelector.addEventListener('change', function () {
       countryCodeSelector.value = nationalitySelector.value;
   });
 
-  function create_options(selector, value, text){
+  function create_options(selector, value, text, showEmoji = false){
     const option = document.createElement('option');
     option.value = value;
     option.textContent = text;
     selector.appendChild(option);
+
+    if (showEmoji) {
+      const emojiCode = phoneFormats[value].emoji;
+      option.textContent = `${emojiCode} ${text}`;
+    }
   }
 
   function validatePhoneNumber() {
@@ -43,7 +48,6 @@ document.addEventListener('DOMContentLoaded', function () {
     const countryData = phoneFormats[selectedCountry];
     if (countryData) {
       const phoneCheck = checkNumber(countryData, phone);
-      console.log(phoneCheck)
       validationResult.textContent = phoneCheck.valid ? "Valid phone number" : phoneCheck.message;
     } else {
       validationResult.textContent = "Invalid conutry code.";
@@ -61,11 +65,11 @@ document.addEventListener('DOMContentLoaded', function () {
       error_msg = "Phone number must start with the country code"
       return {message:error_msg, valid: false}; // Phone number must start with the country code
     }
-
+    console.log(phoneNoPrefix.length, phone_length)
     if (phoneNoPrefix.length === phone_length){
       return {valid: true}
     }else{
-      error_msg = "In "+country_name+" phones should have "+phone_length+" digits instead of "+phoneNumber.length+"."
+      error_msg = "In "+country_name+" phones should have "+phone_length+" digits instead of "+phoneNoPrefix.length+"."
       return {message:error_msg, valid: false}
     }
   }
@@ -73,7 +77,6 @@ document.addEventListener('DOMContentLoaded', function () {
   function removePrefixFromPhoneNumber(phoneNumber, countryData) {
     const formattedPhoneNumber = phoneNumber.replace(/\D/g, ''); // Remove all non-digit characters
     const trunkPrefix = countryData.trunk_prefix;
-    console.log(formattedPhoneNumber, trunkPrefix)
     if (trunkPrefix && formattedPhoneNumber.startsWith(trunkPrefix)) {
       // Remove the prefix from the phone number
       const withoutPrefix = formattedPhoneNumber.substring(trunkPrefix.length);
@@ -101,16 +104,25 @@ document.addEventListener('DOMContentLoaded', function () {
   }
 
   function restrictInput(event) {
-    const allowedCharacters = /[0-9+]/;
+    const allowedCharacters = /[0-9]/;
     const inputChar = String.fromCharCode(event.charCode);
 
     if (!allowedCharacters.test(inputChar)) {
         event.preventDefault();
     }
-}
+  }
+
+  function handlePaste(event) {
+    const pastedText = event.clipboardData.getData('text');
+    const digitsOnly = pastedText.replace(/\D/g, ''); // Remove all non-digit characters
+    event.preventDefault();
+    document.execCommand('insertText', false, digitsOnly);
+  }
 
   fetchUserCountryCode();
 
   document.getElementById('validateButton').addEventListener('click', validatePhoneNumber);
   document.getElementById('phone').addEventListener('keypress', restrictInput);
+  document.getElementById('phone').addEventListener('paste', handlePaste); // Handle paste event
+
 });
