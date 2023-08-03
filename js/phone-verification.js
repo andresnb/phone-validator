@@ -25,6 +25,22 @@ document.addEventListener('DOMContentLoaded', function () {
     }
   }
 
+  function validateLength(){
+    const selectedCountry = nationalitySelector.value;
+    const phone = phoneInput.value.trim();
+
+    const countryData = phoneFormats[selectedCountry];
+    if (countryData) {
+      const phoneCheck = checkLength(countryData, phone);
+      if (phoneCheck.valid == false){
+        validationResult.textContent = phoneCheck.message
+      }
+    } else {
+      validationResult.textContent = "Invalid conutry code.";
+    }
+
+  }
+
   function validatePhoneNumber() {
     const selectedCountry = nationalitySelector.value;
     const countryCode = countryCodeSelector.value;
@@ -65,13 +81,26 @@ document.addEventListener('DOMContentLoaded', function () {
       error_msg = "Phone number must start with the country code"
       return {message:error_msg, valid: false}; // Phone number must start with the country code
     }
-    console.log(phoneNoPrefix.length, phone_length)
+    // if (phoneNoPrefix.length === phone_length){
+    //   return {valid: true}
+    // }else{
+    //   error_msg = "In "+country_name+" phones should have "+phone_length+" digits instead of "+phoneNoPrefix.length+"."
+    //   return {message:error_msg, valid: false}
+    // }
+  }
+
+  function checkLength(countryData, phoneNumber){
+    const { country_code, phone_length, country_name } = countryData;
+
+    const phoneNoPrefix = removePrefixFromPhoneNumber(phoneNumber, countryData);
+    let error_msg = ""
     if (phoneNoPrefix.length === phone_length){
       return {valid: true}
     }else{
-      error_msg = "In "+country_name+" phones should have "+phone_length+" digits instead of "+phoneNoPrefix.length+"."
+      error_msg = "In "+country_name+" phones should have "+phone_length+" digits instead of "+phoneNoPrefix.length+". If you think your phone is ok. Leave it there."
       return {message:error_msg, valid: false}
     }
+
   }
 
   function removePrefixFromPhoneNumber(phoneNumber, countryData) {
@@ -124,5 +153,5 @@ document.addEventListener('DOMContentLoaded', function () {
   document.getElementById('validateButton').addEventListener('click', validatePhoneNumber);
   document.getElementById('phone').addEventListener('keypress', restrictInput);
   document.getElementById('phone').addEventListener('paste', handlePaste); // Handle paste event
-
+  document.getElementById('phone').addEventListener('focusout', validateLength); 
 });
